@@ -23,9 +23,9 @@ public class itemComidaService {
         repository.save(itemComida);
     }
 
-    public itemComida findById(Long id) {
+    public Optional<itemComida> findById(Long id) {
         Optional<itemComida> itemComida = repository.findById(id);
-        return itemComida.orElse(null);
+        return itemComida;
     }
 
     public void delete(Long id){
