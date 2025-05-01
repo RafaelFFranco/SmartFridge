@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: smartFridgeBD
+    restart: always
+    environment:
+      POSTGRES_DB: smartFridgeDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+     - '5432:5432'
