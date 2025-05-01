@@ -35,23 +35,21 @@ public class itemComidaService {
         }
     }
 
-    public itemComida update(itemComida itemComida) {
-        Optional<itemComida> optional = repository.findById(itemComida.getId());
+    public itemComida update(itemComida itemComida, Long id) {
+        Optional<itemComida> optional = repository.findById(id);
 
         if (optional.isPresent()) {
-            itemComida itemComidaAntigo = optional.get();
+            itemComida itemComidaNovo = optional.get();
 
-            itemComidaAntigo.setNome(itemComida.getNome());
-            itemComidaAntigo.setCategoria(itemComida.getCategoria());
-            itemComidaAntigo.setQuantidade(itemComida.getQuantidade());
-            itemComidaAntigo.setValidade(itemComida.getValidade());
+            itemComidaNovo.setId(id);
+            itemComidaNovo.setNome(itemComida.getNome());
+            itemComidaNovo.setCategoria(itemComida.getCategoria());
+            itemComidaNovo.setQuantidade(itemComida.getQuantidade());
+            itemComidaNovo.setValidade(itemComida.getValidade());
 
-            return repository.save(itemComidaAntigo);
+            return repository.save(itemComidaNovo);
         }else {
             throw new RuntimeException("Item não encontrado");
         }
     }
-
-
-
 }

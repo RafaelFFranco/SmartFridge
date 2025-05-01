@@ -5,7 +5,6 @@ import franco.dev.SmartFridgeAPI.service.itemComidaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 @RestController
@@ -36,7 +35,7 @@ public class itemComidaController {
         }
     }
 
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<itemComida> itemComida = service.findById(id);
         if (itemComida.isPresent()) {
@@ -47,9 +46,9 @@ public class itemComidaController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateItem(@RequestBody itemComida itemComida) {
-        service.update(itemComida);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateItem(@RequestBody itemComida itemComida,@PathVariable Long id) {
+        service.update(itemComida,id);
         return ResponseEntity.ok("Produto atualizado com sucesso!");
     }
 }
