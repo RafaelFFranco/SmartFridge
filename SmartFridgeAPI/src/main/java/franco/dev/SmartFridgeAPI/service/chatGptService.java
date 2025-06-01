@@ -1,12 +1,16 @@
 package franco.dev.SmartFridgeAPI.service;
 
+import franco.dev.SmartFridgeAPI.model.itemComida;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -14,24 +18,17 @@ public class chatGptService {
 
     private final WebClient webClient;
     private String apiKey = System.getenv("API_KEY");
+    private itemComidaService itemComidaService;
 
     public chatGptService(WebClient webClient) {
         this.webClient = webClient;
+        this.itemComidaService = new itemComidaService();
     }
 
 
-    /*
-    curl "https://api.openai.com/v1/responses" \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $OPENAI_API_KEY" \
-            -d '{
-            "model": "gpt-4.1",
-            "input": "Write a one-sentence bedtime story about a unicorn."
-}'
-*/
-
-    public Mono<String> generateRecipe(){
-        String prompt = "Agora você é um chefe de cozinha e vai me passar receitas com base nos ingredientes que eu te passar.";
+    public Mono<String> generateRecipe() {
+        List<itemComida> ingredientes = itemComidaService.getAll();
+        String prompt = "Agora você é um chefe de cozinha e vai me passar receitas com base nos ingredientes que eu te passar:" + ingredientes;
 
         Map<String,Object> requestBody = Map.of(
                 "model","gpt-4.1",
@@ -39,10 +36,20 @@ public class chatGptService {
         );
 
         return webClient.post()
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION,"Bearer" + apiKey)
                 .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(Map.class)
+                .map(response -> {
+                    if (!response.isEmpty() && response.containsKey("content")) {
+                        List<?> contentResponse = (List<?>) response.get("content");
+                        if (!contentResponse.isEmpty()) {
+                            String recipe = contentResponse.get(1).toString();
+                            return recipe;
+                        }
+                    }
+                    return "Erro ao gerar a receita.";
+                });
     }
 }

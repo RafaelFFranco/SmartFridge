@@ -11,7 +11,7 @@ public class WebClientConfig {
     @Value("${OPENAI_URL}")
     private String chatGptApiUrl;
 
-    // cria um bean para gerenciamento da requisição ao chatGpt
+    // cria um bean para gerenciamento da requisição ao chatGpt, o contexto do webflux
     @Bean
     public WebClient webClient(WebClient.Builder builder) {
         return builder.baseUrl(chatGptApiUrl).build();

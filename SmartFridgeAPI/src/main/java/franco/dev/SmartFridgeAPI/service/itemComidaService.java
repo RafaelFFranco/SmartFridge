@@ -15,7 +15,7 @@ public class itemComidaService {
     private itemComidaRepository repository;
 
 
-    public List<itemComida> findAll() {
+    public List<itemComida> getAll() {
         return repository.findAll();
     }
 
