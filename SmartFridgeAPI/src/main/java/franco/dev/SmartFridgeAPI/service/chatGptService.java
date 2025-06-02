@@ -27,8 +27,8 @@ public class chatGptService {
 
 
     public Mono<String> generateRecipe() {
-        List<itemComida> ingredientes = itemComidaService.getAll();
-        String prompt = "Agora você é um chefe de cozinha e vai me passar receitas com base nos ingredientes que eu te passar:" + ingredientes;
+        //Agora você é um chefe de cozinha e vai me passar receitas com base nos ingredientes que eu te passar:
+        String prompt = "me sugira uma receita simples com ingredientes comuns";
 
         Map<String,Object> requestBody = Map.of(
                 "model","gpt-4.1",
@@ -45,7 +45,8 @@ public class chatGptService {
                     if (!response.isEmpty() && response.containsKey("content")) {
                         List<?> contentResponse = (List<?>) response.get("content");
                         if (!contentResponse.isEmpty()) {
-                            String recipe = contentResponse.get(1).toString();
+                            Map<String, Object> recipeResponse = (Map<String, Object>) contentResponse.get(0);
+                            String recipe = (String) recipeResponse.get("text");
                             return recipe;
                         }
                     }
