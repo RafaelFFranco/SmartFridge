@@ -22,7 +22,7 @@ public class itemComidaController {
 
     @GetMapping("/getall")
     public ResponseEntity<?> getAllItems() {
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/get{id}")

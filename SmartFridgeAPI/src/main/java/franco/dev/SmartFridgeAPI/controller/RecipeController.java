@@ -4,6 +4,7 @@ import franco.dev.SmartFridgeAPI.model.itemComida;
 import franco.dev.SmartFridgeAPI.service.chatGptService;
 import franco.dev.SmartFridgeAPI.service.itemComidaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,10 @@ public class RecipeController {
     //ele vai me devolver uma resposta mas vai demorar um pouco
     //ResponseEntity é feito com String porque o retorno do prompt é uma String
     public Mono<ResponseEntity<String>> generateRecipe(){
-        return chatGptService.generateRecipe();
+        return chatGptService.generateRecipe()
+                .map(recipe -> ResponseEntity.ok().body(recipe))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+
     }
 
 }
