@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-    @Value("${OPENAI_URL}")
+    @Value("${GEMINI_URL}")
     private String chatGptApiUrl;
 
     // cria um bean para gerenciamento da requisição ao chatGpt, o contexto do webflux

@@ -1,7 +1,7 @@
 package franco.dev.SmartFridgeAPI.controller;
 
-import franco.dev.SmartFridgeAPI.model.itemComida;
-import franco.dev.SmartFridgeAPI.service.itemComidaService;
+import franco.dev.SmartFridgeAPI.model.ItemComida;
+import franco.dev.SmartFridgeAPI.service.ItemComidaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,13 +9,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/item")
-public class itemComidaController {
+public class ItemComidaController {
 
     @Autowired
-    private itemComidaService service;
+    private ItemComidaService service;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addItem(@RequestBody itemComida itemComida) {
+    public ResponseEntity<?> addItem(@RequestBody ItemComida itemComida) {
         service.add(itemComida);
         return ResponseEntity.ok("Produto criado com sucesso!");
     }
@@ -27,7 +27,7 @@ public class itemComidaController {
 
     @GetMapping("/get{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<itemComida> itemComida = service.findById(id);
+        Optional<ItemComida> itemComida = service.findById(id);
         if (itemComida.isPresent()) {
             return ResponseEntity.ok(itemComida.get());
         } else {
@@ -37,7 +37,7 @@ public class itemComidaController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<itemComida> itemComida = service.findById(id);
+        Optional<ItemComida> itemComida = service.findById(id);
         if (itemComida.isPresent()) {
             service.delete(id);
             return ResponseEntity.ok("Produto removido com sucesso!");
@@ -47,7 +47,7 @@ public class itemComidaController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateItem(@RequestBody itemComida itemComida,@PathVariable Long id) {
+    public ResponseEntity<?> updateItem(@RequestBody ItemComida itemComida, @PathVariable Long id) {
         service.update(itemComida,id);
         return ResponseEntity.ok("Produto atualizado com sucesso!");
     }

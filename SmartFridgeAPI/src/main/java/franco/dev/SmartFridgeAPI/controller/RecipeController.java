@@ -1,24 +1,19 @@
 package franco.dev.SmartFridgeAPI.controller;
 
-import franco.dev.SmartFridgeAPI.model.itemComida;
-import franco.dev.SmartFridgeAPI.service.chatGptService;
-import franco.dev.SmartFridgeAPI.service.itemComidaService;
+import franco.dev.SmartFridgeAPI.service.ChatGptService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/recipe")
 public class RecipeController {
 
     @Autowired
-    private chatGptService chatGptService;
+    private ChatGptService chatGptService;
 
     //Get anotation porque nós queremos recuperar os dados de uma requisição enviada para a API do chat gpt
     @GetMapping("/generate")
