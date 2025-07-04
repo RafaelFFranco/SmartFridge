@@ -38,7 +38,9 @@ public class ChatGptService {
 
         Map<String,?> requestBody = Map.of(
                 "contents", List.of(
-                        Map.of("parts", List.of(Map.of("text", "Gere uma receita de uma refeição que eu possa fazer com base no meu banco de dados: \n" + foodData )))
+                        Map.of("parts", List.of(Map.of("text", "Gere uma receita de uma refeição que eu possa fazer com base no meu banco de dados: \n" + foodData +
+                                "responda em um formato JSON com as seguintes keys:\n Nome \n Lista de ingredientes com quantidade\n Modo de preparo passo a passo" +
+                                "não gere receitas que necessitem de ingredientes fora do banco de dados")))
                 )
         );
 
