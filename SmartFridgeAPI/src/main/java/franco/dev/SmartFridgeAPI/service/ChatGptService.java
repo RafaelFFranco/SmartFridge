@@ -1,13 +1,18 @@
 package franco.dev.SmartFridgeAPI.service;
 
+import franco.dev.SmartFridgeAPI.model.ItemComida;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatGptService {
@@ -22,11 +27,18 @@ public class ChatGptService {
     }
 
 
-    public Mono<String> generateRecipe() {
-        //Agora você é um chefe de cozinha e vai me passar receitas com base nos ingredientes que eu te passar:
+    public Mono<String> generateRecipe(List<ItemComida> foodItems) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String foodData = foodItems.stream()
+                .map(food -> String.format("Nome: %s - Quantidade: %d - Validade: %s",
+                        food.getNome(),food.getQuantidade(),food.getValidade().format(formatter)))
+                .collect(Collectors.joining("\n")
+                );
+
         Map<String,?> requestBody = Map.of(
                 "contents", List.of(
-                        Map.of("parts", List.of(Map.of("text", "Agora você é um chefe de cozinha e vai me passar uma receita de bolo de chocolate")))
+                        Map.of("parts", List.of(Map.of("text", "Gere uma receita de uma refeição que eu possa fazer com base no meu banco de dados: \n" + foodData )))
                 )
         );
 
